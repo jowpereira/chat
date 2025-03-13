@@ -3,6 +3,10 @@ import streamlit as st
 
 # Add at top of file
 import logging
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -173,8 +177,192 @@ class StreamlitInterface:
         </style>
         """
         
+        # CSS adicional para os cards de conversa na sidebar
+        sidebar_cards_css = """
+        <style>
+        /* Estilo base para todos os cards */
+        .conversation-card, .conversation-active {
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        /* Card da conversa não ativa */
+        .conversation-card {
+            background: white;
+            border: 1px solid rgba(109, 29, 122, 0.1);
+        }
+        
+        .conversation-card:hover {
+            box-shadow: var(--shadow-primary);
+            border-color: rgba(109, 29, 122, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        /* Card da conversa ativa */
+        .conversation-active {
+            position: relative;
+            background: var(--gradient-primary);
+            padding: 2px !important;
+            box-shadow: 0 6px 12px -2px rgba(109, 29, 122, 0.15);
+        }
+        
+        /* Indicador visual lateral para a conversa ativa */
+        .conversation-active::after {
+            content: "";
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 70%;
+            background: var(--gradient-primary);
+            border-radius: 0 3px 3px 0;
+        }
+        
+        /* Conteúdo da conversa ativa */
+        .conversation-active > div {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        /* Estilo para linha de cards (título e botões) */
+        div[data-testid="column"] {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+        }
+        
+        /* Coluna principal do card (coluna do título) */
+        div[data-testid="column"]:first-child {
+            position: relative;
+            flex: 1;
+        }
+        
+        /* Botões nos cards - remoção de bordas e sombras */
+        div[data-testid="column"] button {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* Botões de ação nos cards (editar e excluir) */
+        div[data-testid="column"] button[key^="edit_"],
+        div[data-testid="column"] button[key^="delete_"] {
+            height: 40px !important;
+            width: 40px !important;
+            min-height: 40px !important;
+            max-height: 40px !important;
+            padding: 0 !important;
+            margin: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 8px !important;
+            background: rgba(109, 29, 122, 0.05) !important;
+            color: var(--marca-purple) !important;
+            transition: all 0.2s ease;
+            opacity: 0.8;
+            flex-shrink: 0;
+        }
+        
+        /* Botões de ação em conversas ativas */
+        .conversation-active div[data-testid="column"] button[key^="edit_"],
+        .conversation-active div[data-testid="column"] button[key^="delete_"] {
+            background: rgba(255, 255, 255, 0.2) !important;
+            color: white !important;
+        }
+        
+        /* Efeito hover nos botões de ação */
+        div[data-testid="column"] button[key^="edit_"]:hover,
+        div[data-testid="column"] button[key^="delete_"]:hover {
+            background: rgba(109, 29, 122, 0.1) !important;
+            transform: translateY(-2px);
+            opacity: 1;
+        }
+        
+        /* Cor específica para o botão excluir no hover */
+        div[data-testid="column"] button[key^="delete_"]:hover {
+            color: var(--marca-red) !important;
+        }
+        
+        /* Cor específica para o botão excluir no hover em conversas ativas */
+        .conversation-active div[data-testid="column"] button[key^="delete_"]:hover {
+            color: #FF5A5A !important;
+        }
+        
+        /* Botão do título da conversa */
+        div[data-testid="column"] button[key^="card_"] {
+            text-align: left;
+            padding: 12px !important;
+            height: 56px !important; /* Altura fixa para alinhar com botões de ação */
+            min-height: 56px !important;
+            max-height: 56px !important;
+            display: flex;
+            align-items: center;
+            background: transparent !important;
+            color: var(--text-color) !important;
+            outline: none !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            padding-right: 60px !important; /* Espaço para o badge de data */
+            width: 100% !important;
+            flex: 1;
+        }
+        
+        /* Estilo especial para o botão de título em conversas ativas */
+        .conversation-active div[data-testid="column"] button[key^="card_"] {
+            font-weight: 500 !important;
+            color: var(--marca-purple) !important;
+        }
+        
+        /* Badge de data */
+        .conversation-date-badge {
+            position: absolute !important;
+            right: 12px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            background: rgba(109, 29, 122, 0.08);
+            color: var(--marca-purple);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            z-index: 5;
+            pointer-events: none; /* Importante para evitar conflitos com cliques no botão */
+        }
+        
+        /* Badge de data em conversas ativas */
+        .conversation-active .conversation-date-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        /* Melhorar a visibilidade da interação nos cards */
+        .conversation-card:hover div[data-testid="column"] button[key^="card_"] {
+            background: rgba(109, 29, 122, 0.02) !important;
+        }
+        
+        .conversation-active:hover div[data-testid="column"] button[key^="card_"] {
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        /* Ajustes para a visibilidade das colunas */
+        .stHorizontalBlock {
+            align-items: center !important;
+            flex-wrap: nowrap !important;
+            overflow: hidden !important;
+        }
+        </style>
+        """
+        
         # Garantir que as variáveis CSS sejam definidas
         st.markdown(css, unsafe_allow_html=True)
+        st.markdown(sidebar_cards_css, unsafe_allow_html=True)
 
     @staticmethod
     def _init_session_state():
@@ -353,7 +541,7 @@ class StreamlitInterface:
         </style>
         
         <script>
-        // Script para garantir que textos longos tenham elipses e ajustar posicionamento da data
+        // Script para garantir que textos longos tenham elipses
         document.addEventListener('DOMContentLoaded', function() {
             // Função para aplicar truncamento de texto nos botões de conversas
             function applyTruncation() {
@@ -367,34 +555,43 @@ class StreamlitInterface:
                         button.setAttribute('title', button.textContent);
                     }
                 });
+            }
+            
+            // Função para aplicar efeitos visuais nos botões de ação
+            function applyButtonEffects() {
+                // Identificar todos os cards de conversa
+                const cards = document.querySelectorAll('.conversation-card, .conversation-active > div');
                 
-                // Posicionar corretamente os badges de data
-                document.querySelectorAll('.conversation-date-badge').forEach(badge => {
-                    const badgeId = badge.id;
-                    if (badgeId && badgeId.startsWith('date-')) {
-                        const convId = badgeId.replace('date-', '');
-                        const button = document.querySelector(`button[key="card_${convId}"]`);
-                        
-                        if (button && button.parentElement) {
-                            // Ajustar a posição relativa ao pai do botão
-                            const buttonContainer = button.parentElement.parentElement;
-                            if (buttonContainer) {
-                                buttonContainer.style.position = 'relative';
-                                badge.style.position = 'absolute';
-                                badge.style.right = '10px';
-                                badge.style.bottom = '5px';
-                                badge.style.zIndex = '5';
-                            }
-                        }
-                    }
+                cards.forEach(card => {
+                    // Encontrar os botões de ação dentro deste card
+                    const actionButtons = card.querySelectorAll('button[key^="edit_"], button[key^="delete_"]');
+                    
+                    // Aplicar efeito de hover no card
+                    card.addEventListener('mouseenter', function() {
+                        actionButtons.forEach(btn => {
+                            btn.style.opacity = '1';
+                        });
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        actionButtons.forEach(btn => {
+                            btn.style.opacity = '0.7';
+                        });
+                    });
                 });
             }
             
-            // Aplicar o truncamento inicialmente
-            setTimeout(applyTruncation, 500);
+            // Aplicar as funções inicialmente
+            setTimeout(() => {
+                applyTruncation();
+                applyButtonEffects();
+            }, 500);
             
-            // Observar mudanças no DOM para replicar o truncamento em novos botões
-            const observer = new MutationObserver(applyTruncation);
+            // Observar mudanças no DOM
+            const observer = new MutationObserver(() => {
+                applyTruncation();
+                applyButtonEffects();
+            });
             observer.observe(document.body, { childList: true, subtree: true });
         });
         </script>
@@ -425,11 +622,15 @@ class StreamlitInterface:
                     card_container = st.sidebar.container()
                     st.sidebar.markdown("</div>", unsafe_allow_html=True)
                 else:
+                    # Para conversas não ativas, usar container normal com classe
+                    st.sidebar.markdown("<div class='conversation-card'>", unsafe_allow_html=True)
                     card_container = st.sidebar.container()
+                    st.sidebar.markdown("</div>", unsafe_allow_html=True)
                 
                 # Renderizar o card compacto apenas com título e botões
                 with card_container:
-                    card_cols = st.columns([5, 1, 1])  # Proporções para título e botões
+                    # Proporções ajustadas para melhor alinhamento
+                    card_cols = st.columns([6, 1, 1])
                     
                     # Coluna para o título
                     with card_cols[0]:
@@ -445,18 +646,26 @@ class StreamlitInterface:
                             tooltip = "Clique para carregar esta conversa"
                             short_date = ""
                         
-                        # Exibir apenas o título no botão sem HTML adicional
-                        if st.button(title, key=f"card_{conv_id}", 
-                                  help=tooltip,
-                                  use_container_width=True):
-                            # Carregar a conversa, sem alterar sua posição na ordenação
-                            self._load_conversation(conversation_id)
-                        
-                        # Após o botão, injetar o badge de data usando um div posicionado
-                        if short_date:
-                            card_cols[0].markdown(f"""
-                            <div class="conversation-date-badge" id="date-{conv_id}">{short_date}</div>
-                            """, unsafe_allow_html=True)
+                        # Exibir o título no botão com o badge de data integrado
+                        with st.container():
+                            # Definir o container como posição relativa para o badge
+                            st.markdown('<div style="position: relative;">', unsafe_allow_html=True)
+                            
+                            # Botão principal com o título
+                            if st.button(title, key=f"card_{conv_id}", 
+                                      help=tooltip,
+                                      use_container_width=True):
+                                # Carregar a conversa, sem alterar sua posição na ordenação
+                                self._load_conversation(conversation_id)
+                            
+                            # Badge de data posicionado dentro do container relativo
+                            if short_date:
+                                st.markdown(f"""
+                                <div class="conversation-date-badge">{short_date}</div>
+                                """, unsafe_allow_html=True)
+                            
+                            # Fechar o container relativo
+                            st.markdown('</div>', unsafe_allow_html=True)
                     
                     # Botões de ação em colunas menores
                     with card_cols[1]:

@@ -511,4 +511,178 @@ def get_chat_css():
 .user-message:hover .message-content {
     transform: translateY(-2px) scale(1.005);
 }
+
+.conversation-active {
+    position: relative;
+    border-radius: 12px;
+    background: var(--gradient-primary);
+    padding: 2px !important;
+    margin-bottom: 12px;
+    box-shadow: 0 6px 12px -2px rgba(109, 29, 122, 0.15);
+}
+
+.conversation-active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    background: var(--gradient-primary);
+    z-index: -1;
+}
+
+.conversation-active > div {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Indicador visual de conversa ativa */
+.conversation-active::after {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 70%;
+    background: var(--gradient-primary);
+    border-radius: 0 3px 3px 0;
+}
+
+/* Botão dentro da conversa ativa */
+.conversation-active button[key^="card_"] {
+    font-weight: 500 !important;
+    color: var(--marca-purple) !important;
+}
+
+/* Estilo do card de conversa */
+.conversation-card {
+    position: relative;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    background: white;
+    border: 1px solid rgba(109, 29, 122, 0.1);
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+
+.conversation-card:hover {
+    box-shadow: var(--shadow-primary);
+    border-color: rgba(109, 29, 122, 0.2);
+}
+
+/* Botão dentro do card */
+button[key^="card_"] {
+    text-align: left;
+    padding: 12px !important;
+    height: auto !important;
+    min-height: 56px !important;
+    display: flex;
+    align-items: center;
+    background: transparent !important;
+    color: var(--text-color) !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    padding-right: 60px !important; /* Space for date badge */
+}
+
+/* Botões de ação */
+.conversation-card button[key^="edit_"],
+.conversation-card button[key^="delete_"] {
+    height: 40px !important;
+    width: 40px !important;
+    min-height: 40px !important;
+    padding: 0 !important;
+    margin: 8px 6px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px !important;
+    background: rgba(109, 29, 122, 0.05) !important;
+    color: var(--marca-purple) !important;
+    border: none !important;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.conversation-active button[key^="edit_"],
+.conversation-active button[key^="delete_"] {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+}
+
+.conversation-card button[key^="edit_"]:hover,
+.conversation-card button[key^="delete_"]:hover,
+.conversation-active button[key^="edit_"]:hover,
+.conversation-active button[key^="delete_"]:hover {
+    background: rgba(109, 29, 122, 0.1) !important;
+    transform: translateY(-2px);
+    opacity: 1;
+}
+
+.conversation-card button[key^="delete_"]:hover {
+    color: var(--marca-red) !important;
+}
+
+.conversation-active button[key^="delete_"]:hover {
+    color: #FF5A5A !important;
+}
+
+/* Badge de data */
+.conversation-date-badge {
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: rgba(109, 29, 122, 0.08);
+    color: var(--marca-purple);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    z-index: 5;
+}
+
+.conversation-active .conversation-date-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Estado vazio */
+.empty-state {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(109, 29, 122, 0.05);
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.empty-state-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--marca-purple);
+}
+
+.empty-state p {
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+/* Campo de renomeação */
+.rename-input {
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: var(--shadow-primary);
+}
 """
