@@ -223,9 +223,32 @@ class StreamlitInterface:
         
         /* Conteúdo da conversa ativa */
         .conversation-active > div {
-            background: white;
+            background: rgba(248, 240, 255, 0.7);
             border-radius: 10px;
-            overflow: hidden;
+            overflow: visible !important;
+        }
+        
+        /* Nova solução para os botões cortados */
+        /* Contêiner para os botões de ação */
+        .action-buttons-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 !important;
+            width: 100% !important;
+            overflow: visible !important;
+            position: relative !important;
+            z-index: 25 !important;
+        }
+        
+        /* Botões de ação (específico para colunas 2 e 3) */
+        div[data-testid="column"]:nth-child(2) button,
+        div[data-testid="column"]:nth-child(3) button {
+            display: block !important;
+            margin: 0 auto !important;
+            position: relative !important;
+            transform: none !important;
+            z-index: 50 !important;
         }
         
         /* Estilo para linha de cards (título e botões) */
@@ -234,6 +257,23 @@ class StreamlitInterface:
             align-items: center !important;
             justify-content: center !important;
             padding: 0 !important;
+            overflow: visible !important;
+        }
+        
+        /* Colunas para botões de ação */
+        div[data-testid="column"]:nth-child(2),
+        div[data-testid="column"]:nth-child(3) {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-width: 50px !important;
+            width: auto !important;
+            overflow: visible !important;
+            padding: 0 !important;
+            position: relative !important;
+            z-index: 10 !important;
+            margin: 0 !important;
+            flex-shrink: 0 !important;
         }
         
         /* Coluna principal do card (coluna do título) */
@@ -251,21 +291,45 @@ class StreamlitInterface:
         /* Botões de ação nos cards (editar e excluir) */
         div[data-testid="column"] button[key^="edit_"],
         div[data-testid="column"] button[key^="delete_"] {
-            height: 40px !important;
-            width: 40px !important;
-            min-height: 40px !important;
-            max-height: 40px !important;
+            width: 24px !important;
+            height: 24px !important;
+            min-width: 24px !important;
+            min-height: 24px !important;
+            max-width: 24px !important;
+            max-height: 24px !important;
             padding: 0 !important;
-            margin: 8px !important;
-            display: flex !important;
+            margin: 0 auto !important;
+            display: inline-block !important;
             align-items: center !important;
             justify-content: center !important;
-            border-radius: 8px !important;
-            background: rgba(109, 29, 122, 0.05) !important;
+            border-radius: 4px !important;
+            background: rgba(109, 29, 122, 0.08) !important;
             color: var(--marca-purple) !important;
-            transition: all 0.2s ease;
-            opacity: 0.8;
-            flex-shrink: 0;
+            border: none !important;
+            box-shadow: none !important;
+            overflow: visible !important;
+            z-index: 50 !important;
+            position: static !important;
+            transform: none !important;
+            line-height: 1 !important;
+            font-size: 12px !important;
+            text-align: center !important;
+            clip: auto !important;
+            white-space: nowrap !important;
+        }
+        
+        /* Estilo de botão específico para mobile */
+        @media (max-width: 768px) {
+            div[data-testid="column"] button[key^="edit_"],
+            div[data-testid="column"] button[key^="delete_"] {
+                width: 22px !important;
+                height: 22px !important;
+                min-width: 22px !important;
+                min-height: 22px !important;
+                max-width: 22px !important;
+                max-height: 22px !important;
+                font-size: 10px !important;
+            }
         }
         
         /* Botões de ação em conversas ativas */
@@ -303,15 +367,17 @@ class StreamlitInterface:
             display: flex;
             align-items: center;
             background: transparent !important;
-            color: var(--text-color) !important;
+            color: var(--marca-purple) !important;
+            font-weight: 500 !important;
             outline: none !important;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             position: relative;
-            padding-right: 60px !important; /* Espaço para o badge de data */
+            padding-right: 50px !important; /* Espaço reduzido para o badge de data */
             width: 100% !important;
             flex: 1;
+            transition: all 0.2s ease;
         }
         
         /* Estilo especial para o botão de título em conversas ativas */
@@ -539,62 +605,6 @@ class StreamlitInterface:
             margin-right: 8px;
         }
         </style>
-        
-        <script>
-        // Script para garantir que textos longos tenham elipses
-        document.addEventListener('DOMContentLoaded', function() {
-            // Função para aplicar truncamento de texto nos botões de conversas
-            function applyTruncation() {
-                const cardButtons = document.querySelectorAll('button[key^="card_"]');
-                cardButtons.forEach(button => {
-                    // Certificar que o botão tenha a classe para truncamento
-                    button.classList.add('truncate-text');
-                    
-                    // Garantir que o texto seja truncado e tenha apenas texto (sem HTML)
-                    if (button.textContent && button.textContent.length > 30) {
-                        button.setAttribute('title', button.textContent);
-                    }
-                });
-            }
-            
-            // Função para aplicar efeitos visuais nos botões de ação
-            function applyButtonEffects() {
-                // Identificar todos os cards de conversa
-                const cards = document.querySelectorAll('.conversation-card, .conversation-active > div');
-                
-                cards.forEach(card => {
-                    // Encontrar os botões de ação dentro deste card
-                    const actionButtons = card.querySelectorAll('button[key^="edit_"], button[key^="delete_"]');
-                    
-                    // Aplicar efeito de hover no card
-                    card.addEventListener('mouseenter', function() {
-                        actionButtons.forEach(btn => {
-                            btn.style.opacity = '1';
-                        });
-                    });
-                    
-                    card.addEventListener('mouseleave', function() {
-                        actionButtons.forEach(btn => {
-                            btn.style.opacity = '0.7';
-                        });
-                    });
-                });
-            }
-            
-            // Aplicar as funções inicialmente
-            setTimeout(() => {
-                applyTruncation();
-                applyButtonEffects();
-            }, 500);
-            
-            // Observar mudanças no DOM
-            const observer = new MutationObserver(() => {
-                applyTruncation();
-                applyButtonEffects();
-            });
-            observer.observe(document.body, { childList: true, subtree: true });
-        });
-        </script>
         """, unsafe_allow_html=True)
         
         # Listar conversas salvas ou mostrar estado vazio
@@ -630,7 +640,7 @@ class StreamlitInterface:
                 # Renderizar o card compacto apenas com título e botões
                 with card_container:
                     # Proporções ajustadas para melhor alinhamento
-                    card_cols = st.columns([6, 1, 1])
+                    card_cols = st.columns([3, 1, 1])
                     
                     # Coluna para o título
                     with card_cols[0]:
@@ -669,14 +679,20 @@ class StreamlitInterface:
                     
                     # Botões de ação em colunas menores
                     with card_cols[1]:
+                        # Adicionar um container para o botão de editar
+                        st.markdown('<div class="action-buttons-container">', unsafe_allow_html=True)
                         if st.button("✏️", key=f"edit_{conv_id}", 
                                   help="Editar título da conversa"):
                             self._toggle_rename(conversation_id)
+                        st.markdown('</div>', unsafe_allow_html=True)
                     
                     with card_cols[2]:
+                        # Adicionar um container para o botão de excluir
+                        st.markdown('<div class="action-buttons-container">', unsafe_allow_html=True)
                         if st.button("🗑️", key=f"delete_{conv_id}", 
                                   help="Excluir conversa"):
                             self._toggle_delete(conversation_id)
+                        st.markdown('</div>', unsafe_allow_html=True)
                 
                 # Campo de renomeação (condicional)
                 if f"show_rename_{conv_id}" in st.session_state and st.session_state[f"show_rename_{conv_id}"]:

@@ -5,10 +5,10 @@ def get_chat_css():
     text-align: center;
     margin-bottom: 2rem;
     padding: 1.8rem 0 1.5rem;
-    background: linear-gradient(135deg, rgba(109, 29, 122, 0.05) 0%, rgba(204, 10, 43, 0.02) 100%);
-    border-radius: 0 0 30px 30px;
+    background: var(--gradient-subtle);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     border-bottom: 1px solid rgba(109, 29, 122, 0.08);
-    box-shadow: 0 6px 18px -8px rgba(109, 29, 122, 0.08);
+    box-shadow: var(--shadow-md);
     position: relative;
     overflow: hidden;
 }
@@ -31,7 +31,8 @@ def get_chat_css():
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 50% 0%, rgba(109, 29, 122, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle at 50% 0%, var(--accent-purple) 0%, transparent 70%);
+    opacity: 0.1;
     pointer-events: none;
 }
 
@@ -42,7 +43,7 @@ def get_chat_css():
     letter-spacing: -1.5px;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
-    color: transparent;
+    -webkit-text-fill-color: transparent;
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -230,10 +231,11 @@ def get_chat_css():
 }
 
 .assistant-message .message-content {
-    background: linear-gradient(145deg, rgba(109, 29, 122, 0.05) 0%, rgba(109, 29, 122, 0.02) 100%);
+    background: var(--chat-assistant);
     border: 1px solid rgba(109, 29, 122, 0.1);
     border-radius: 0 18px 18px 18px;
-    box-shadow: 0 4px 12px rgba(109, 29, 122, 0.05);
+    box-shadow: var(--shadow-sm);
+    position: relative;
 }
 
 .assistant-message .message-content::before {
@@ -243,7 +245,7 @@ def get_chat_css():
     top: 20px;
     width: 18px;
     height: 18px;
-    background: linear-gradient(135deg, rgba(109, 29, 122, 0.05) 0%, rgba(109, 29, 122, 0.02) 100%);
+    background: var(--chat-assistant);
     transform: rotate(45deg);
     border-left: 1px solid rgba(109, 29, 122, 0.1);
     border-bottom: 1px solid rgba(109, 29, 122, 0.1);
@@ -288,10 +290,11 @@ def get_chat_css():
 }
 
 .user-message .message-content {
-    background: linear-gradient(145deg, rgba(204, 10, 43, 0.02) 0%, rgba(255, 107, 107, 0.01) 100%);
+    background: var(--chat-user);
     border: 1px solid rgba(204, 10, 43, 0.05);
     border-radius: 18px 0 18px 18px;
-    box-shadow: 0 4px 12px rgba(204, 10, 43, 0.02);
+    box-shadow: var(--shadow-sm);
+    position: relative;
 }
 
 .user-message .message-content::before {
@@ -301,7 +304,7 @@ def get_chat_css():
     top: 20px;
     width: 18px;
     height: 18px;
-    background: linear-gradient(135deg, rgba(204, 10, 43, 0.03) 0%, rgba(204, 10, 43, 0.01) 100%);
+    background: var(--chat-user);
     transform: rotate(45deg);
     border-right: 1px solid rgba(204, 10, 43, 0.08);
     border-top: 1px solid rgba(204, 10, 43, 0.08);
@@ -375,21 +378,21 @@ def get_chat_css():
 
 [data-testid="stChatInput"] > div:focus-within {
     border-color: var(--marca-purple) !important;
-    box-shadow: 0 0 0 1px rgba(109, 29, 122, 0.08) !important;
+    box-shadow: 0 0 0 2px rgba(109, 29, 122, 0.08) !important;
     background-color: rgba(255, 255, 255, 0.95) !important;
 }
 
 [data-testid="stChatInput"] > div:hover {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
-    border-color: #D0D0D0 !important;
+    box-shadow: var(--shadow-sm) !important;
+    border-color: rgba(109, 29, 122, 0.2) !important;
 }
 
 /* Estilizar o botão de envio */
 [data-testid="stChatInput"] button {
-    background: linear-gradient(120deg, var(--marca-purple) 0%, rgba(156, 46, 161, 0.9) 100%) !important;
+    background: var(--gradient-primary) !important;
     border-radius: 50% !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 3px 8px rgba(109, 29, 122, 0.08) !important;
+    box-shadow: var(--shadow-md) !important;
     margin-left: 8px !important;
     width: 38px !important;
     height: 38px !important;
@@ -410,24 +413,31 @@ def get_chat_css():
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    background: var(--gradient-secondary);
     opacity: 0;
     transition: opacity 0.3s ease;
+    z-index: -1;
 }
 
 [data-testid="stChatInput"] button::after {
     content: "";
     position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.15), transparent 70%);
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    z-index: -2;
+    opacity: 0.3;
     transform: translateX(-100%);
     transition: transform 0.6s ease;
-    pointer-events: none;
 }
 
 [data-testid="stChatInput"] button:hover {
     transform: scale(1.05) !important;
-    box-shadow: 0 5px 12px rgba(109, 29, 122, 0.15) !important;
+    box-shadow: var(--shadow-lg) !important;
 }
 
 [data-testid="stChatInput"] button:hover::before {
@@ -435,13 +445,14 @@ def get_chat_css():
 }
 
 [data-testid="stChatInput"] button:hover::after {
-    transform: translateX(100%);
+    transform: translateX(0%);
 }
 
 /* Estilo de placeholder */
 [data-testid="stChatInput"] input {
     font-size: 0.95rem !important;
     letter-spacing: 0.2px !important;
+    color: rgba(30, 30, 30, 0.8) !important;
 }
 
 /* Cursor de digitação */
@@ -449,14 +460,15 @@ def get_chat_css():
     display: inline-block;
     width: 2px;
     height: 1em;
-    background: var(--marca-purple);
+    background: linear-gradient(to bottom, var(--marca-purple), var(--marca-red));
     vertical-align: bottom;
-    animation: blink 1s infinite;
+    animation: blink 1.2s infinite;
+    border-radius: 1px;
 }
 
 @keyframes blink {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+    50% { opacity: 0.3; }
 }
 
 /* Ajustes para visualização em dispositivos móveis */
@@ -504,12 +516,32 @@ def get_chat_css():
     100% { opacity: 1; transform: translateX(0); }
 }
 
+.assistant-message {
+    animation: message-in-left 0.3s ease forwards;
+}
+
+.user-message {
+    animation: message-in-right 0.3s ease forwards;
+}
+
 .assistant-message:hover .message-content {
     transform: translateY(-2px) scale(1.005);
+    box-shadow: var(--shadow-md);
+}
+
+.assistant-message:hover .message-avatar {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 4px rgba(109, 29, 122, 0.08);
 }
 
 .user-message:hover .message-content {
     transform: translateY(-2px) scale(1.005);
+    box-shadow: var(--shadow-md);
+}
+
+.user-message:hover .message-avatar {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 4px rgba(204, 10, 43, 0.08);
 }
 
 .conversation-active {
@@ -518,7 +550,13 @@ def get_chat_css():
     background: var(--gradient-primary);
     padding: 2px !important;
     margin-bottom: 12px;
-    box-shadow: 0 6px 12px -2px rgba(109, 29, 122, 0.15);
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s ease;
+}
+
+.conversation-active:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
 }
 
 .conversation-active::before {
@@ -529,8 +567,27 @@ def get_chat_css():
     right: 0;
     bottom: 0;
     border-radius: 12px;
-    background: var(--gradient-primary);
+    background: var(--gradient-secondary);
     z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.conversation-active:hover::before {
+    opacity: 1;
+}
+
+.conversation-active::after {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 70%;
+    background: var(--gradient-primary);
+    border-radius: 0 3px 3px 0;
+    box-shadow: 0 0 8px rgba(109, 29, 122, 0.2);
 }
 
 .conversation-active > div {
@@ -556,6 +613,9 @@ def get_chat_css():
 .conversation-active button[key^="card_"] {
     font-weight: 500 !important;
     color: var(--marca-purple) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    position: relative;
+    z-index: 5;
 }
 
 /* Estilo do card de conversa */
@@ -565,33 +625,51 @@ def get_chat_css():
     margin-bottom: 12px;
     background: white;
     border: 1px solid rgba(109, 29, 122, 0.1);
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     overflow: hidden;
 }
 
 .conversation-card:hover {
-    box-shadow: var(--shadow-primary);
+    box-shadow: var(--shadow-md);
     border-color: rgba(109, 29, 122, 0.2);
+    transform: translateY(-2px);
+}
+
+.conversation-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: var(--gradient-subtle);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.conversation-card:hover::before {
+    opacity: 1;
 }
 
 /* Botão dentro do card */
 button[key^="card_"] {
     text-align: left;
-    padding: 12px !important;
+    padding: 12px 14px !important;
     height: auto !important;
     min-height: 56px !important;
     display: flex;
     align-items: center;
     background: transparent !important;
     color: var(--text-color) !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    position: relative;
-    padding-right: 60px !important; /* Space for date badge */
+    font-weight: 400 !important;
+    letter-spacing: 0.2px !important;
+    transition: all 0.2s ease !important;
+    border-left: 3px solid transparent !important;
+}
+
+button[key^="card_"]:hover {
+    color: var(--marca-purple) !important;
+    background: rgba(248, 240, 255, 0.3) !important;
 }
 
 /* Botões de ação */
@@ -605,35 +683,64 @@ button[key^="card_"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px !important;
+    border-radius: 10px !important;
     background: rgba(109, 29, 122, 0.05) !important;
     color: var(--marca-purple) !important;
     border: none !important;
-    transition: all 0.2s ease;
-    opacity: 0.7;
-}
-
-.conversation-active button[key^="edit_"],
-.conversation-active button[key^="delete_"] {
-    background: rgba(255, 255, 255, 0.2) !important;
-    color: white !important;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .conversation-card button[key^="edit_"]:hover,
-.conversation-card button[key^="delete_"]:hover,
-.conversation-active button[key^="edit_"]:hover,
-.conversation-active button[key^="delete_"]:hover {
-    background: rgba(109, 29, 122, 0.1) !important;
+.conversation-card button[key^="delete_"]:hover {
     transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.conversation-card button[key^="edit_"]::before,
+.conversation-card button[key^="delete_"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-subtle);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    border-radius: 10px;
+}
+
+.conversation-card button[key^="edit_"]:hover::before {
     opacity: 1;
+    background: var(--gradient-primary);
+}
+
+.conversation-card button[key^="delete_"]:hover::before {
+    opacity: 1;
+    background: linear-gradient(135deg, var(--marca-red) 0%, #FF6B6B 100%);
+}
+
+.conversation-card button[key^="edit_"]:hover {
+    color: white !important;
+    background: transparent !important;
 }
 
 .conversation-card button[key^="delete_"]:hover {
-    color: var(--marca-red) !important;
+    color: white !important;
+    background: transparent !important;
 }
 
-.conversation-active button[key^="delete_"]:hover {
-    color: #FF5A5A !important;
+.conversation-card button[key^="edit_"] svg,
+.conversation-card button[key^="delete_"] svg {
+    transition: all 0.3s ease;
+}
+
+.conversation-card button[key^="edit_"]:hover svg,
+.conversation-card button[key^="delete_"]:hover svg {
+    transform: scale(1.15);
 }
 
 /* Badge de data */

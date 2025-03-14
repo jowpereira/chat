@@ -118,14 +118,6 @@ def get_sidebar_extra_css():
         position: relative !important;
     }
     
-    /* Classe específica para truncamento de texto */
-    .truncate-text {
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        max-width: 100% !important;
-    }
-    
     /* Span para o título com truncamento */
     .conversation-title {
         max-width: calc(100% - 58px) !important; /* Reduzido de 65px */
@@ -396,5 +388,16 @@ def get_sidebar_extra_css():
             color: rgba(109, 29, 122, 0.7);
             z-index: 10;
         }
+    }
+    
+    .sidebar-card:hover {
+        position: relative !important;
+    }
+    
+    /* Modificando o container do Streamlit para evitar scrollbar desnecessário */
+    section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        max-height: calc(100vh - 4.5rem) !important;
     }
     """ 
